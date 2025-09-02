@@ -1,0 +1,100 @@
+<html lang="en">
+  <head>
+    <title>Event Importer</title>
+    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body class="container">
+    <header>
+      <h1>Event Importer Assessment</h1>
+    </header>
+    <section>
+      <form id="uploadForm" onsubmit="return uploadFile(event)">
+        <div class="row align-items-end mb-3">
+          <div class="form-group col">
+            <label for="jsonFile" class="form-label"
+              >Please select a file to upload events:</label
+            >
+            <input
+              id="jsonFile"
+              type="file"
+              accept=".json"
+              class="form-control"
+            />
+          </div>
+          <div class="col">
+            <button type="submit" class="btn btn-secondary">
+              Load events</button>
+              <button type="button" onclick="clearEvents()" class="btn btn-outline-secondary">
+              Clear events</button>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <span id="uploadMessage" class="form-text"></span>
+        </div>
+      </form>
+      <form id="eventsFilter" onsubmit="return false">
+        <div class="row mb-3">
+          <div class="form-group col">
+            <label for="eventFilter" class="form-label"
+              >Filter by event name:</label
+            >
+            <input
+              id="eventFilter"
+              type="text"
+              class="form-control"
+              placeholder="Event name"
+              aria-placeholder="Event Name Filter"
+            />
+          </div>
+          <div class="form-group col">
+            <label for="dateFilter" class="form-label"
+              >Filter by event date:</label
+            >
+            <input
+              id="dateFilter"
+              type="date"
+              class="form-control"
+              placeholder="Event date"
+            />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <button type="button" onclick="filterEvents()" class="btn btn-primary">
+              Filter events</button>
+            <button type="button" onclick="showAllEvents()" class="btn btn-outline-primary">
+              Clear filter</button>
+          </div>
+      </form>
+    </section>
+    <section>
+      <ul id="eventList" class="list-unstyled">
+      </ul>
+    </section>
+
+    <template id="eventCardTemplate">
+      <li class="card mb-3">
+        <article class="card-body">
+          <h3 class="card-title"></h3>
+          <time class="card-text" datetime=""></time>
+          <span class="card-subtitle mb-2 text-muted"></span>
+          <p class="card-text"></p>
+        </article>
+      </li>
+    </template>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

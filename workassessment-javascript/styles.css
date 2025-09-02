@@ -1,0 +1,12 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
