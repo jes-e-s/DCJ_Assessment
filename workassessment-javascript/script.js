@@ -9,6 +9,9 @@ const messageList = {
   filterApplied: "Filters applied.",
 };
 
+let loaderStartTime = 0;
+const MINIMUM_LOADER_TIME = 3000; // 0.5 seconds in milliseconds
+
 function logEvents(group, message) {
   console.group("Log " + group + " - " + new Date().toISOString());
   console.log(message);
@@ -56,7 +59,6 @@ function uploadFile(e) {
   const file = fileInput.files[0];
 
   if (file) {
-    toggleLoader(true);
     const reader = new FileReader();
 
     reader.onload = function (e) {
@@ -109,6 +111,7 @@ function uploadFile(e) {
 
 function displayEvents() {
   resetEventsContainer();
+  toggleLoader(true);
 
   const eventListContainer = document.querySelector("#eventList");
   let templateSupported = true;
@@ -117,66 +120,69 @@ function displayEvents() {
   }
 
   const eventList = retrieveEvents();
-  if (eventList.length > 0) {
-    eventList.forEach((element) => {
-      const eventName = element.event.trim();
-      const eventDate = new Date(element.date);
-      const eventLocation =
-        (element.location ? element.location.trim() + ", " : "") +
-        element.district.trim();
-      const eventType = element.type ? element.type.trim() : "";
-      if (templateSupported) {
-        const cardTemplate = document.querySelector("#eventCardTemplate");
-        const card = cardTemplate.content.cloneNode(true);
+  setTimeout(() => {
+    if (eventList.length > 0) {
+      eventList.forEach((element) => {
+        const eventName = element.event.trim();
+        const eventDate = new Date(element.date);
+        const eventLocation =
+          (element.location ? element.location.trim() + ", " : "") +
+          element.district.trim();
+        const eventType = element.type ? element.type.trim() : "";
+        if (templateSupported) {
+          const cardTemplate = document.querySelector("#eventCardTemplate");
+          const card = cardTemplate.content.cloneNode(true);
 
-        card.querySelector("h3").textContent = eventName;
-        card
-          .querySelector("time")
-          .setAttribute("datetime", eventDate.toISOString().split("T")[0]);
-        card.querySelector("time").textContent = eventDate.toDateString();
-        card.querySelector("span").textContent = eventLocation;
-        card.querySelectorAll("p").textContent = eventType;
-        eventListContainer.appendChild(card);
-      } else {
-        logEvents("Load Events", "Your browser does not support templates");
-        // Create card elements
-        const li = document.createElement("li");
-        li.className = "card mb-3";
+          card.querySelector("h3").textContent = eventName;
+          card
+            .querySelector("time")
+            .setAttribute("datetime", eventDate.toISOString().split("T")[0]);
+          card.querySelector("time").textContent = eventDate.toDateString();
+          card.querySelector("span").textContent = eventLocation;
+          card.querySelector("p").textContent = eventType;
+          eventListContainer.appendChild(card);
+        } else {
+          logEvents("Load Events", "Your browser does not support templates");
+          // Create card elements
+          const li = document.createElement("li");
+          li.className = "card mb-3";
 
-        const article = document.createElement("article");
-        article.className = "card-body";
+          const article = document.createElement("article");
+          article.className = "card-body";
 
-        const h3 = document.createElement("h3");
-        h3.className = "card-title";
-        h3.textContent = eventName;
+          const h3 = document.createElement("h3");
+          h3.className = "card-title";
+          h3.textContent = eventName;
 
-        const time = document.createElement("time");
-        time.className = "card-text";
-        time.setAttribute("datetime", eventDate.toISOString().split("T")[0]);
-        time.textContent = eventDate.toDateString();
+          const time = document.createElement("time");
+          time.className = "card-text";
+          time.setAttribute("datetime", eventDate.toISOString().split("T")[0]);
+          time.textContent = eventDate.toDateString();
 
-        const span = document.createElement("span");
-        span.className = "card-subtitle mb-2 text-muted";
-        span.textContent = eventLocation;
+          const span = document.createElement("span");
+          span.className = "card-subtitle mb-2 text-muted";
+          span.textContent = eventLocation;
 
-        const p = document.createElement("p");
-        p.className = "card-text";
-        p.textContent = eventType;
+          const p = document.createElement("p");
+          p.className = "card-text";
+          p.textContent = eventType;
 
-        // Assemble card
-        article.appendChild(h3);
-        article.appendChild(time);
-        article.appendChild(span);
-        article.appendChild(p);
-        li.appendChild(article);
+          // Assemble card
+          article.appendChild(h3);
+          article.appendChild(time);
+          article.appendChild(span);
+          article.appendChild(p);
+          li.appendChild(article);
 
-        eventListContainer.appendChild(li);
-      }
-    });
-  } else {
-    showMessage(messageList.noEventsToDisplay, false);
-    logEvents("Load Events", "No events found in session storage.");
-  }
+          eventListContainer.appendChild(li);
+        }
+      });
+    } else {
+      showMessage(messageList.noEventsToDisplay, false);
+      logEvents("Load Events", "No events found in session storage.");
+    }
+    toggleLoader(false);
+  }, 500);
 }
 
 function resetEventsContainer() {
@@ -185,7 +191,6 @@ function resetEventsContainer() {
 }
 
 function filterEvents() {
-  toggleLoader(true);
   showMessage("");
   displayEvents();
   logEvents("Filter Events", "Filters applied.");
@@ -232,8 +237,7 @@ function retrieveEvents() {
   return eventList.filter(applyFilters);
 }
 
-let loaderStartTime = 0;
-const MINIMUM_LOADER_TIME = 500; // 0.5 seconds in milliseconds
+// ...existing code...
 
 function toggleLoader(show = true) {
   const eventListContainer = document.querySelector("#eventList");
@@ -266,23 +270,11 @@ function toggleLoader(show = true) {
     loaderContainer.appendChild(spinner);
     loaderContainer.appendChild(loadingText);
     eventListContainer.appendChild(loaderContainer);
-
-    return Promise.resolve();
   } else {
-    // Calculate how long the loader has been shown
-    const elapsedTime = Date.now() - loaderStartTime;
-    const remainingTime = Math.max(0, MINIMUM_LOADER_TIME - elapsedTime);
-
-    // Return a promise that resolves after the remaining time
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Remove loader if exists
-        const loader = eventListContainer.querySelector(".loader-container");
-        if (loader) {
-          loader.remove();
-        }
-        resolve();
-      }, remainingTime);
-    });
+    // Remove loader if exists
+    const loader = eventListContainer.querySelector(".loader-container");
+    if (loader) {
+      loader.remove();
+    }
   }
 }
