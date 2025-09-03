@@ -1,3 +1,4 @@
+// Message constants
 const messageList = {
   fileUploadSuccess: " events successfully loaded.",
   fileUploadError: "Error uploading file.",
@@ -9,16 +10,19 @@ const messageList = {
   filterApplied: "Filters applied.",
 };
 
-let loaderStartTime = 0;
-const MINIMUM_LOADER_TIME = 3000; // 0.5 seconds in milliseconds
+// Pagination constants
+const ITEMS_PER_PAGE = 6; // Number of cards per page
+let currentPage = 1;
 
+// Log events with timestamp
 function logEvents(group, message) {
   console.group("Log " + group + " - " + new Date().toISOString());
   console.log(message);
   console.groupEnd();
 }
 
-function showMessage(message, isValid = false) {
+// Update upload form message display
+function updateMessage(message, isValid = false) {
   const uploadMessage = document.querySelector("#uploadMessage");
   if (isValid)
     uploadMessage.classList = uploadMessage.classList + " text-success";
@@ -26,6 +30,7 @@ function showMessage(message, isValid = false) {
   uploadMessage.textContent = message;
 }
 
+// Validate each event object in the uploaded JSON file
 function validateEventObject(eventEntry, index, errorIndexes) {
   let isValid = true;
   const requiredProperties = ["event", "date"];
@@ -52,6 +57,7 @@ function validateEventObject(eventEntry, index, errorIndexes) {
   return isValid;
 }
 
+// Handle file upload
 function uploadFile(e) {
   e.preventDefault();
 
@@ -78,7 +84,7 @@ function uploadFile(e) {
         });
 
         sessionStorage.setItem("eventData", JSON.stringify(validEvents));
-        showMessage(
+        updateMessage(
           (eventData.length - errorIndexes.length).toString() +
             messageList.fileUploadSuccess,
           true
@@ -103,12 +109,13 @@ function uploadFile(e) {
     };
     reader.readAsText(file);
   } else {
-    showMessage(messageList.noFileSelected, false);
+    updateMessage(messageList.noFileSelected, false);
     console.error("No file selected");
   }
   return false;
 }
 
+// Display events in the UI
 function displayEvents() {
   resetEventsContainer();
   toggleLoader(true);
@@ -124,8 +131,9 @@ function displayEvents() {
   // Calculate pagination
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const pagedEventList = allEvents.slice(startIndex, endIndex);
+  const pagedEventList = eventList.slice(startIndex, endIndex);
 
+  // Set timeout to better show loading dataset
   setTimeout(() => {
     if (eventList.length > 0) {
       pagedEventList.forEach((element) => {
@@ -135,6 +143,7 @@ function displayEvents() {
         const eventDistrict = element.district.trim();
         const eventType = element.type ? element.type.trim() : "";
         if (templateSupported) {
+          // Use template to create card elements
           const cardTemplate = document.querySelector("#eventCardTemplate");
           const card = cardTemplate.content.cloneNode(true);
 
@@ -149,7 +158,7 @@ function displayEvents() {
           eventListContainer.appendChild(card);
         } else {
           logEvents("Load Events", "Your browser does not support templates");
-          // Create card elements
+          // Create card elements manually
           const li = document.createElement("li");
           li.className = "card mb-3";
 
@@ -186,7 +195,7 @@ function displayEvents() {
       // Setup pagination after adding cards
       setupPagination(eventList.length);
     } else {
-      showMessage(messageList.noEventsToDisplay, false);
+      updateMessage(messageList.noEventsToDisplay, false);
       logEvents("Load Events", "No events found in session storage.");
     }
     toggleLoader(false);
@@ -200,7 +209,7 @@ function resetEventsContainer() {
 
 function filterEvents() {
   resetPagination();
-  showMessage("");
+  updateMessage("");
   displayEvents();
   logEvents("Filter Events", "Filters applied.");
 }
@@ -218,7 +227,7 @@ function clearEvents() {
   document.getElementById("uploadForm").reset();
   clearFilters();
   resetPagination();
-  showMessage(messageList.eventsCleared, true);
+  updateMessage(messageList.eventsCleared, true);
   logEvents("Clear Events", "Events cleared from session storage.");
 }
 
@@ -248,13 +257,11 @@ function retrieveEvents() {
   return eventList.filter(applyFilters);
 }
 
+// Show or hide loader
 function toggleLoader(show = true) {
   const eventListContainer = document.querySelector("#eventList");
 
   if (show) {
-    // Record the start time
-    loaderStartTime = Date.now();
-
     // Clear existing content
     eventListContainer.innerHTML = "";
 
@@ -287,9 +294,6 @@ function toggleLoader(show = true) {
     }
   }
 }
-
-const ITEMS_PER_PAGE = 6; // Number of cards per page
-let currentPage = 1;
 
 function setupPagination(totalItems) {
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
