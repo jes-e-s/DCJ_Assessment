@@ -125,9 +125,8 @@ function displayEvents() {
       eventList.forEach((element) => {
         const eventName = element.event.trim();
         const eventDate = new Date(element.date);
-        const eventLocation =
-          (element.location ? element.location.trim() + ", " : "") +
-          element.district.trim();
+        const eventLocation = element.location.trim();
+        const eventDistrict = element.district.trim();
         const eventType = element.type ? element.type.trim() : "";
         if (templateSupported) {
           const cardTemplate = document.querySelector("#eventCardTemplate");
@@ -138,8 +137,9 @@ function displayEvents() {
             .querySelector("time")
             .setAttribute("datetime", eventDate.toISOString().split("T")[0]);
           card.querySelector("time").textContent = eventDate.toDateString();
-          card.querySelector("span").textContent = eventLocation;
-          card.querySelector("p").textContent = eventType;
+          card.querySelectorAll("span")[0].textContent = eventLocation;
+          card.querySelectorAll("span")[1].textContent = eventDistrict;
+          card.querySelectorAll("span")[2].textContent = eventType;
           eventListContainer.appendChild(card);
         } else {
           logEvents("Load Events", "Your browser does not support templates");
@@ -236,8 +236,6 @@ function retrieveEvents() {
   const eventList = JSON.parse(sessionStorage.getItem("eventData")) || [];
   return eventList.filter(applyFilters);
 }
-
-// ...existing code...
 
 function toggleLoader(show = true) {
   const eventListContainer = document.querySelector("#eventList");

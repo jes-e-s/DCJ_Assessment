@@ -13,14 +13,15 @@
 
   <body class="container">
     <header>
-      <h1>Event Importer Assessment</h1>
+      <h1 class="text-center">DCJ Assessment</h1>
     </header>
-    <section>
-      <form id="uploadForm" onsubmit="return uploadFile(event)">
-        <div class="row align-items-end mb-3">
-          <div class="form-group col">
+    <section class="p-3 rounded-3 mb-3" style="background-color:#dfdfdf" aria-label="Event Loader Section">
+      <h2>Event Loader Form</h2>
+      <form id="uploadForm" onsubmit="return uploadFile(event)" role="form" aria-label="Event Loader Form">
+        <div class="row align-items-end">
+          <fieldset class="form-group col">
             <label for="jsonFile" class="form-label"
-              >Please select a file to upload events:</label
+              >Select a file to upload events:</label
             >
             <input
               id="jsonFile"
@@ -28,23 +29,27 @@
               accept=".json"
               class="form-control"
             />
-          </div>
-          <div class="col">
+          </fieldset>
+          <fieldset class="col">
             <button type="submit" class="btn btn-secondary">
-              Load events</button>
+              Load file</button>
               <button type="button" onclick="clearEvents()" class="btn btn-outline-secondary">
-              Clear events</button>
-          </div>
+              Clear file</button>
+          </fieldset>
         </div>
         <div class="row mb-3">
-          <span id="uploadMessage" class="form-text"></span>
-        </div>
+          <span id="uploadMessage" class="form-text fw-bold"></span>
+        </div>  
       </form>
-      <form id="eventsFilter" onsubmit="return false">
+    </section>
+    <main>
+    <section class="p-3 rounded-3" aria-label="Event List Section">
+      <h2>Event List</h2>
+      <form id="eventsFilter" onsubmit="return false" role="search">
         <div class="row mb-3">
           <div class="form-group col">
             <label for="eventFilter" class="form-label"
-              >Filter by event name:</label
+              >Filter by name:</label
             >
             <input
               id="eventFilter"
@@ -56,7 +61,7 @@
           </div>
           <div class="form-group col">
             <label for="dateFilter" class="form-label"
-              >Filter by event date:</label
+              >Filter by date:</label
             >
             <input
               id="dateFilter"
@@ -76,17 +81,19 @@
       </form>
     </section>
     <section>
-      <ul id="eventList" class="list-unstyled">
+      <ul id="eventList" class="list-unstyled mt-3" aria-label="Event List">
+        <!-- Event cards will be appended here -->
       </ul>
-    </section>
-
+      </section>
+  </main>
     <template id="eventCardTemplate">
-      <li class="card mb-3">
+      <li class="card mb-3 w-75 focus-ring" tabindex="0" aria-label="Event Card">
         <article class="card-body">
-          <h3 class="card-title"></h3>
-          <time class="card-text d-block" datetime=""></time>
-          <span class="card-subtitle mb-2 text-muted d-block"></span>
-          <p class="card-text"></p>
+          <h3 class="card-title card-header" aria-label="Event name"></h3>
+          <label class="text-muted">Date:</label><time class="card-text d-block" datetime="" aria-label="Event date"></time>
+          <label class="text-muted">Location:</label><span class="card-text mb-2 d-block" aria-label="Event location"></span>
+          <label class="text-muted">District:</label><span class="card-text mb-2 d-block" aria-label="Event district"></span>
+          <label class="text-muted">Type:</label><span class="card-text d-block" aria-label="Event type"></span>
         </article>
       </li>
     </template>
