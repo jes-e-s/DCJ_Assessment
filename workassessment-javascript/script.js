@@ -120,9 +120,15 @@ function displayEvents() {
   }
 
   const eventList = retrieveEvents();
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const pagedEventList = allEvents.slice(startIndex, endIndex);
+
   setTimeout(() => {
     if (eventList.length > 0) {
-      eventList.forEach((element) => {
+      pagedEventList.forEach((element) => {
         const eventName = element.event.trim();
         const eventDate = new Date(element.date);
         const eventLocation = element.location.trim();
@@ -177,6 +183,8 @@ function displayEvents() {
           eventListContainer.appendChild(li);
         }
       });
+      // Setup pagination after adding cards
+      setupPagination(eventList.length);
     } else {
       showMessage(messageList.noEventsToDisplay, false);
       logEvents("Load Events", "No events found in session storage.");
@@ -191,6 +199,7 @@ function resetEventsContainer() {
 }
 
 function filterEvents() {
+  resetPagination();
   showMessage("");
   displayEvents();
   logEvents("Filter Events", "Filters applied.");
@@ -198,6 +207,7 @@ function filterEvents() {
 
 function showAllEvents() {
   clearFilters();
+  resetPagination();
   displayEvents();
   logEvents("Show All Events", "Filters cleared.");
 }
@@ -207,6 +217,7 @@ function clearEvents() {
   resetEventsContainer();
   document.getElementById("uploadForm").reset();
   clearFilters();
+  resetPagination();
   showMessage(messageList.eventsCleared, true);
   logEvents("Clear Events", "Events cleared from session storage.");
 }
@@ -275,4 +286,134 @@ function toggleLoader(show = true) {
       loader.remove();
     }
   }
+}
+
+const ITEMS_PER_PAGE = 6; // Number of cards per page
+let currentPage = 1;
+
+function setupPagination(totalItems) {
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const paginationContainer = document.getElementById("pagination");
+  paginationContainer.innerHTML = "";
+
+  // Previous button
+  const prevLi = document.createElement("li");
+  prevLi.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+  const prevLink = document.createElement("a");
+  prevLink.className = "page-link";
+  prevLink.href = "#";
+  prevLink.setAttribute("aria-label", "Previous");
+  prevLink.innerHTML = '<span aria-hidden="true">&laquo;</span>';
+  prevLink.onclick = (e) => {
+    e.preventDefault();
+    if (currentPage > 1) {
+      currentPage--;
+      displayEvents();
+    }
+  };
+  prevLi.appendChild(prevLink);
+  paginationContainer.appendChild(prevLi);
+
+  // Page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement("li");
+    li.className = `page-item ${currentPage === i ? "active" : ""}`;
+    const link = document.createElement("a");
+    link.className = "page-link";
+    link.href = "#";
+    link.textContent = i;
+    link.onclick = (e) => {
+      e.preventDefault();
+      currentPage = i;
+      displayEvents();
+    };
+    li.appendChild(link);
+    paginationContainer.appendChild(li);
+  }
+
+  // Next button
+  const nextLi = document.createElement("li");
+  nextLi.className = `page-item ${
+    currentPage === totalPages ? "disabled" : ""
+  }`;
+  const nextLink = document.createElement("a");
+  nextLink.className = "page-link";
+  nextLink.href = "#";
+  nextLink.setAttribute("aria-label", "Next");
+  nextLink.innerHTML = '<span aria-hidden="true">&raquo;</span>';
+  nextLink.onclick = (e) => {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayEvents();
+    }
+  };
+  nextLi.appendChild(nextLink);
+  paginationContainer.appendChild(nextLi);
+}
+
+function setupPagination(totalItems) {
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const paginationContainer = document.getElementById("pagination");
+  paginationContainer.innerHTML = "";
+
+  // Previous button
+  const prevLi = document.createElement("li");
+  prevLi.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+  const prevLink = document.createElement("a");
+  prevLink.className = "page-link";
+  prevLink.href = "#";
+  prevLink.setAttribute("aria-label", "Previous");
+  prevLink.innerHTML = '<span aria-hidden="true">&laquo;</span>';
+  prevLink.onclick = (e) => {
+    e.preventDefault();
+    if (currentPage > 1) {
+      currentPage--;
+      displayEvents();
+    }
+  };
+  prevLi.appendChild(prevLink);
+  paginationContainer.appendChild(prevLi);
+
+  // Page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement("li");
+    li.className = `page-item ${currentPage === i ? "active" : ""}`;
+    const link = document.createElement("a");
+    link.className = "page-link";
+    link.href = "#";
+    link.textContent = i;
+    link.onclick = (e) => {
+      e.preventDefault();
+      currentPage = i;
+      displayEvents();
+    };
+    li.appendChild(link);
+    paginationContainer.appendChild(li);
+  }
+
+  // Next button
+  const nextLi = document.createElement("li");
+  nextLi.className = `page-item ${
+    currentPage === totalPages ? "disabled" : ""
+  }`;
+  const nextLink = document.createElement("a");
+  nextLink.className = "page-link";
+  nextLink.href = "#";
+  nextLink.setAttribute("aria-label", "Next");
+  nextLink.innerHTML = '<span aria-hidden="true">&raquo;</span>';
+  nextLink.onclick = (e) => {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayEvents();
+    }
+  };
+  nextLi.appendChild(nextLink);
+  paginationContainer.appendChild(nextLi);
+}
+
+function resetPagination() {
+  currentPage = 1;
+  document.getElementById("pagination").innerHTML = "";
 }

@@ -10,3 +10,24 @@
   width: 3rem;
   height: 3rem;
 }
+
+.pagination {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.page-link {
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  color: #ccc;
+  cursor: not-allowed;
+}

@@ -84,16 +84,21 @@
       <ul id="eventList" class="list-unstyled mt-3" aria-label="Event List">
         <!-- Event cards will be appended here -->
       </ul>
+
+      <nav aria-label="Event list pagination">
+        <ul id="pagination" class="pagination justify-content-center">
+        </ul>
+      </nav>
       </section>
   </main>
     <template id="eventCardTemplate">
-      <li class="card mb-3 w-75 focus-ring" tabindex="0" aria-label="Event Card">
+      <li class="card mb-3 w-auto focus-ring" tabindex="0" aria-label="Event Card">
         <article class="card-body">
           <h3 class="card-title card-header" aria-label="Event name"></h3>
-          <label class="text-muted">Date:</label><time class="card-text d-block" datetime="" aria-label="Event date"></time>
-          <label class="text-muted">Location:</label><span class="card-text mb-2 d-block" aria-label="Event location"></span>
-          <label class="text-muted">District:</label><span class="card-text mb-2 d-block" aria-label="Event district"></span>
-          <label class="text-muted">Type:</label><span class="card-text d-block" aria-label="Event type"></span>
+          <div class="m-2 ms-3"><label class="text-muted">Date:</label><time class="card-text mb-2 mt-2" datetime="" aria-label="Event date"></time></div>
+          <div class="m-2 ms-3"><label class="text-muted">Location:</label><span class="card-text mb-2" aria-label="Event location"></span></div>
+          <div class="m-2 ms-3"><label class="text-muted">District:</label><span class="card-text mb-2" aria-label="Event district"></span></div>
+          <div class="m-2 ms-3"><label class="text-muted">Type:</label><span class="card-text" aria-label="Event type"></span></div>
         </article>
       </li>
     </template>
