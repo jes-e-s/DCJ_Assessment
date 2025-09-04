@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Event Importer</title>
     <script type="text/javascript" src="script.js"></script>
     <link rel="stylesheet" href="styles.css" />
@@ -15,11 +17,11 @@
     <header>
       <h1 class="text-center">DCJ Assessment</h1>
     </header>
-    <section class="p-3 rounded-3 mb-3" style="background-color:#dfdfdf" aria-label="Event Loader Section">
+    <section class="p-3 rounded-3 mb-3 border border-secondary-subtle" aria-label="Event Loader Section">
       <h2>Event Loader Form</h2>
       <form id="uploadForm" onsubmit="return uploadFile(event)" role="form" aria-label="Event Loader Form">
         <div class="row align-items-end">
-          <fieldset class="form-group col">
+          <fieldset class="form-group col" >
             <label for="jsonFile" class="form-label"
               >Select a file to upload events:</label
             >
@@ -27,13 +29,13 @@
               id="jsonFile"
               type="file"
               accept=".json"
-              class="form-control"
+              class="form-control form-control-lg"
             />
           </fieldset>
           <fieldset class="col">
-            <button type="submit" class="btn btn-secondary">
+            <button type="submit" class="btn btn-lg btn-secondary">
               Load file</button>
-              <button type="button" onclick="clearEvents()" class="btn btn-outline-secondary">
+              <button type="button" onclick="clearEvents()" class="btn btn-lg btn-outline-secondary">
               Clear file</button>
           </fieldset>
         </div>
@@ -42,8 +44,8 @@
         </div>  
       </form>
     </section>
-    <main>
-    <section class="p-3 rounded-3" aria-label="Event List Section">
+    <main aria-label="Event List Main">
+    <section class="p-3 rounded-3 border border-primary-subtle">
       <h2>Event List</h2>
       <form id="eventsFilter" onsubmit="return false" role="search">
         <div class="row mb-3">
@@ -54,9 +56,8 @@
             <input
               id="eventFilter"
               type="text"
-              class="form-control"
+              class="form-control form-control-lg"
               placeholder="Event name"
-              aria-placeholder="Event Name Filter"
             />
           </div>
           <div class="form-group col">
@@ -66,21 +67,24 @@
             <input
               id="dateFilter"
               type="date"
-              class="form-control"
+              class="form-control form-control-lg"
               placeholder="Event date"
             />
           </div>
         </div>
         <div class="row mb-3">
           <div class="col">
-            <button type="button" onclick="filterEvents()" class="btn btn-primary">
+            <button type="button" onclick="filterEvents()" class="btn btn-lg btn-primary">
               Filter events</button>
-            <button type="button" onclick="showAllEvents()" class="btn btn-outline-primary">
+            <button type="button" onclick="showAllEvents()" class="btn btn-lg btn-outline-primary">
               Clear filter</button>
           </div>
       </form>
     </section>
     <section>
+      <div class="p-3">
+        <span>Displaying 1 to 6 out of 24 Events</span>
+      </div>
       <ul id="eventList" class="list-unstyled mt-3" aria-label="Event List">
         <!-- Event cards will be appended here -->
       </ul>
@@ -89,10 +93,10 @@
         <ul id="pagination" class="pagination justify-content-center">
         </ul>
       </nav>
-      </section>
+    </section>
   </main>
     <template id="eventCardTemplate">
-      <li class="card mb-3 w-auto focus-ring" aria-label="Event Card">
+      <li class="card mb-3 w-auto focus-ring" aria-label="Event card">
         <article class="card-body">
           <h3 class="card-title card-header" aria-label="Event name"></h3>
           <div class="m-2 ms-3"><label class="text-muted">Date : </label><time class="card-text mb-2 mt-2" datetime="" aria-label="Event date"></time></div>
