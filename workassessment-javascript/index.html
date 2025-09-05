@@ -21,7 +21,7 @@
       <h2>Event Loader Form</h2>
       <form id="uploadForm" onsubmit="return uploadFile(event)" role="form" aria-label="Event Loader Form">
         <div class="row align-items-end">
-          <fieldset class="form-group col" >
+          <fieldset class="form-group col-lg-6 col-md-12 mb-md-3 mb-sm-3" >
             <label for="jsonFile" class="form-label"
               >Select a file to upload events:</label
             >
@@ -29,11 +29,11 @@
               id="jsonFile"
               type="file"
               accept=".json"
-              class="form-control form-control-lg"
+              class="form-control form-control-lg form-control-sm"
             />
           </fieldset>
-          <fieldset class="col">
-            <button type="submit" class="btn btn-lg btn-secondary">
+          <fieldset class="col-lg-6 col-md-12 m-auto">
+            <button type="submit" class="btn btn-lg btn-lg btn-secondary">
               Load file</button>
               <button type="button" onclick="clearEvents()" class="btn btn-lg btn-outline-secondary">
               Clear file</button>
@@ -49,7 +49,7 @@
       <h2>Event List</h2>
       <form id="eventsFilter" onsubmit="return false" role="search">
         <div class="row mb-3">
-          <div class="form-group col">
+          <div class="form-group col-lg-6 col-md-12">
             <label for="eventFilter" class="form-label"
               >Filter by name:</label
             >
@@ -60,7 +60,7 @@
               placeholder="Event name"
             />
           </div>
-          <div class="form-group col">
+          <div class="form-group col-lg-6 col-md-12">
             <label for="dateFilter" class="form-label"
               >Filter by date:</label
             >
@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
+          <div class="col-lg-6 col-md-12">
             <button type="button" onclick="filterEvents()" class="btn btn-lg btn-primary">
               Filter events</button>
             <button type="button" onclick="showAllEvents()" class="btn btn-lg btn-outline-primary">
