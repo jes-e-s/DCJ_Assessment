@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Event Importer</title>
     <script type="text/javascript" src="script.js"></script>
     <link rel="stylesheet" href="styles.css" />
@@ -17,11 +17,21 @@
     <header>
       <h1 class="text-center">DCJ Assessment</h1>
     </header>
-    <section class="p-3 rounded-3 mb-3 border border-secondary-subtle" class="background-color:#f2f2f2;" aria-label="Event Loader Section">
-      <h2>Event Loader Form</h2>
-      <form id="uploadForm" onsubmit="return uploadFile(event)" role="form" aria-label="Event Loader Form">
+    <section
+      id="uploadSection"
+      class="p-3 rounded-3 mb-3 border border-secondary-subtle"
+      class="background-color:#f2f2f2;"
+      aria-label="Event Loader Section"
+    >
+      <h2>Event Loader</h2>
+      <form
+        id="uploadForm"
+        onsubmit="return uploadFile(event)"
+        role="form"
+        aria-label="Event Loader Form"
+      >
         <div class="row align-items-end">
-          <fieldset class="form-group col-lg-6 col-md-12 mb-md-3 mb-sm-3" >
+          <fieldset class="form-group col-lg-6 col-md-12">
             <label for="jsonFile" class="form-label"
               >Select a file to upload events:</label
             >
@@ -29,80 +39,109 @@
               id="jsonFile"
               type="file"
               accept=".json"
-              class="form-control form-control-lg form-control-sm"
+              class="form-control"
             />
           </fieldset>
-          <fieldset class="col-lg-6 col-md-12 m-auto">
-            <button type="submit" class="btn btn-lg btn-lg btn-secondary">
-              Load file</button>
-              <button type="button" onclick="clearEvents()" class="btn btn-lg btn-outline-secondary">
-              Clear file</button>
+          <fieldset class="col-lg-6 col-md-12 mt-3 mt-lg-0">
+            <button type="submit" class="btn btn-secondary">Load file</button>
           </fieldset>
         </div>
         <div class="row mb-3">
           <span id="uploadMessage" class="form-text fw-bold"></span>
-        </div>  
-      </form>
-    </section>
-    <main aria-label="Event List Main">
-    <section class="p-3 rounded-3 border border-primary-subtle">
-      <h2>Event List</h2>
-      <form id="eventsFilter" onsubmit="return false" role="search">
-        <div class="row mb-3">
-          <div class="form-group col-lg-6 col-md-12">
-            <label for="eventFilter" class="form-label"
-              >Filter by name:</label
-            >
-            <input
-              id="eventFilter"
-              type="text"
-              class="form-control form-control-lg"
-              placeholder="Event name"
-            />
-          </div>
-          <div class="form-group col-lg-6 col-md-12">
-            <label for="dateFilter" class="form-label"
-              >Filter by date:</label
-            >
-            <input
-              id="dateFilter"
-              type="date"
-              class="form-control form-control-lg"
-              placeholder="Event date"
-            />
-          </div>
         </div>
-        <div class="row mb-3">
-          <div class="col-lg-6 col-md-12">
-            <button type="button" onclick="filterEvents()" class="btn btn-lg btn-primary">
-              Filter events</button>
-            <button type="button" onclick="showAllEvents()" class="btn btn-lg btn-outline-primary">
-              Clear filter</button>
-          </div>
       </form>
     </section>
-    <section>
-      <div class="p-3">
-        <span id="paginationInfo" role=""></span>
-      </div>
-      <ul id="eventList" class="list-unstyled mt-3" aria-label="Event List">
-        <!-- Event cards will be appended here -->
-      </ul>
-
-      <nav aria-label="Event list pagination">
-        <ul id="pagination" class="pagination justify-content-center">
+    <main id="main" class="d-none" aria-label="Event List Main">
+      <section class="p-3 rounded-3 border border-primary-subtle">
+        <h2>Event List</h2>
+        <form id="eventsFilter" onsubmit="return false" role="search">
+          <div class="row mb-3">
+            <div class="form-group col-lg-6 col-md-12">
+              <label for="eventFilter" class="form-label"
+                >Filter by event name:</label
+              >
+              <input
+                id="eventFilter"
+                type="text"
+                class="form-control"
+                placeholder="Event name"
+              />
+            </div>
+            <div class="form-group col-lg-6 col-md-12">
+              <label for="dateFilter" class="form-label"
+                >Filter by event date:</label
+              >
+              <input
+                id="dateFilter"
+                type="date"
+                class="form-control"
+                placeholder="Event date"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-lg-6 col-md-12">
+              <button
+                type="button"
+                onclick="filterEvents()"
+                class="btn btn-primary"
+              >
+                Filter events
+              </button>
+              <button
+                type="button"
+                onclick="showAllEvents()"
+                class="btn btn-outline-primary"
+              >
+                Clear filter
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-danger ms-auto"
+                onclick="clearEvents()"
+              >
+                Remove events
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+      <section>
+        <div class="p-3">
+          <span id="paginationInfo"></span>
+        </div>
+        <ul id="eventList" class="list-unstyled mt-3" aria-label="Event List">
+          <!-- Event cards will be appended here -->
         </ul>
-      </nav>
-    </section>
-  </main>
+        <nav aria-label="Event list pagination">
+          <ul id="pagination" class="pagination justify-content-center"></ul>
+        </nav>
+      </section>
+    </main>
     <template id="eventCardTemplate">
       <li class="card mb-3 w-auto focus-ring" aria-label="Event card">
         <article class="card-body">
           <h3 class="card-title card-header" aria-label="Event name"></h3>
-          <div class="m-2 ms-3"><label class="text-muted">Date:</label> <time class="card-text mb-2 mt-2" datetime="" aria-label="Event date"></time></div>
-          <div class="m-2 ms-3"><label class="text-muted">Location:</label> <span class="card-text mb-2" aria-label="Event location"></span></div>
-          <div class="m-2 ms-3"><label class="text-muted">District:</label> <span class="card-text mb-2" aria-label="Event district"></span></div>
-          <div class="m-2 ms-3"><label class="text-muted">Type:</label> <span class="card-text" aria-label="Event type"></span></div>
+          <div class="m-2 ms-3">
+            <label class="text-muted">Date:</label>
+            <time
+              class="card-text mb-2 mt-2"
+              datetime=""
+              aria-label="Event date"
+            ></time>
+          </div>
+          <div class="m-2 ms-3">
+            <label class="text-muted">Location:</label>
+            <span class="card-text mb-2" aria-label="Event location"></span>
+          </div>
+          <div class="m-2 ms-3">
+            <label class="text-muted">District:</label>
+            <span class="card-text mb-2" aria-label="Event district"></span>
+          </div>
+          <div class="m-2 ms-3">
+            <label class="text-muted">Type:</label>
+            <span class="card-text" aria-label="Event type"></span>
+          </div>
         </article>
       </li>
     </template>

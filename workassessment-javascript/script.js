@@ -134,12 +134,13 @@ function displayEvents() {
   const pagedEventList = eventList.slice(startIndex, endIndex);
   const paginationInfo = document.getElementById("paginationInfo");
   if (eventList.length > 0) {
-    const displayStart = startIndex + 1;
-    const displayEnd = Math.min(endIndex, eventList.length);
+    let displayStart = startIndex + 1;
+    let displayEnd = Math.min(endIndex, eventList.length);
     paginationInfo.textContent = `Displaying ${displayStart} to ${displayEnd} out of ${eventList.length} Events`;
   } else {
-    paginationInfo.textContent = "";
+    paginationInfo.textContent = "No matching events!";
   }
+  toggleMain(true);
   // Set timeout to better show loading dataset
   setTimeout(() => {
     if (eventList.length > 0) {
@@ -149,55 +150,20 @@ function displayEvents() {
         const eventLocation = element.location.trim();
         const eventDistrict = element.district.trim();
         const eventType = element.type ? element.type.trim() : "";
-        if (templateSupported) {
-          // Use template to create card elements
-          const cardTemplate = document.querySelector("#eventCardTemplate");
-          const card = cardTemplate.content.cloneNode(true);
 
-          card.querySelector("h3").textContent = eventName;
-          card
-            .querySelector("time")
-            .setAttribute("datetime", eventDate.toISOString().split("T")[0]);
-          card.querySelector("time").textContent = eventDate.toDateString();
-          card.querySelectorAll("span")[0].textContent = eventLocation;
-          card.querySelectorAll("span")[1].textContent = eventDistrict;
-          card.querySelectorAll("span")[2].textContent = eventType;
-          eventListContainer.appendChild(card);
-        } else {
-          logEvents("Load Events", "Your browser does not support templates");
-          // Create card elements manually
-          const li = document.createElement("li");
-          li.className = "card mb-3";
+        // Use template to create card elements
+        const cardTemplate = document.querySelector("#eventCardTemplate");
+        const card = cardTemplate.content.cloneNode(true);
 
-          const article = document.createElement("article");
-          article.className = "card-body";
-
-          const h3 = document.createElement("h3");
-          h3.className = "card-title";
-          h3.textContent = eventName;
-
-          const time = document.createElement("time");
-          time.className = "card-text";
-          time.setAttribute("datetime", eventDate.toISOString().split("T")[0]);
-          time.textContent = eventDate.toDateString();
-
-          const span = document.createElement("span");
-          span.className = "card-subtitle mb-2 text-muted";
-          span.textContent = eventLocation;
-
-          const p = document.createElement("p");
-          p.className = "card-text";
-          p.textContent = eventType;
-
-          // Assemble card
-          article.appendChild(h3);
-          article.appendChild(time);
-          article.appendChild(span);
-          article.appendChild(p);
-          li.appendChild(article);
-
-          eventListContainer.appendChild(li);
-        }
+        card.querySelector("h3").textContent = eventName;
+        card
+          .querySelector("time")
+          .setAttribute("datetime", eventDate.toISOString().split("T")[0]);
+        card.querySelector("time").textContent = eventDate.toDateString();
+        card.querySelectorAll("span")[0].textContent = eventLocation;
+        card.querySelectorAll("span")[1].textContent = eventDistrict;
+        card.querySelectorAll("span")[2].textContent = eventType;
+        eventListContainer.appendChild(card);
       });
       // Setup pagination after adding cards
       setupPagination(eventList.length);
@@ -236,6 +202,9 @@ function clearEvents() {
   resetPagination();
   updateMessage(messageList.eventsCleared, true);
   logEvents("Clear Events", "Events cleared from session storage.");
+  const paginationInfo = document.getElementById("paginationInfo");
+  paginationInfo.textContent = "";
+  toggleMain(false);
 }
 
 function clearFilters() {
@@ -427,4 +396,17 @@ function setupPagination(totalItems) {
 function resetPagination() {
   currentPage = 1;
   document.getElementById("pagination").innerHTML = "";
+}
+
+function toggleMain(show) {
+  const main = document.getElementById("main");
+  if (show) main.classList = "";
+  else main.classList = "d-none";
+  toggleUploadSection(!show);
+}
+
+function toggleUploadSection(show) {
+  const a = document.getElementById("uploadSection");
+  if (show) a.classList = "p-3 rounded-3 mb-3 border border-secondary-subtle";
+  else a.classList = "d-none";
 }
