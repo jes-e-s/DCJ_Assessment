@@ -132,7 +132,14 @@ function displayEvents() {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const pagedEventList = eventList.slice(startIndex, endIndex);
-
+  const paginationInfo = document.getElementById("paginationInfo");
+  if (eventList.length > 0) {
+    const displayStart = startIndex + 1;
+    const displayEnd = Math.min(endIndex, eventList.length);
+    paginationInfo.textContent = `Displaying ${displayStart} to ${displayEnd} out of ${eventList.length} Events`;
+  } else {
+    paginationInfo.textContent = "";
+  }
   // Set timeout to better show loading dataset
   setTimeout(() => {
     if (eventList.length > 0) {

@@ -17,7 +17,7 @@
     <header>
       <h1 class="text-center">DCJ Assessment</h1>
     </header>
-    <section class="p-3 rounded-3 mb-3 border border-secondary-subtle" aria-label="Event Loader Section">
+    <section class="p-3 rounded-3 mb-3 border border-secondary-subtle" class="background-color:#f2f2f2;" aria-label="Event Loader Section">
       <h2>Event Loader Form</h2>
       <form id="uploadForm" onsubmit="return uploadFile(event)" role="form" aria-label="Event Loader Form">
         <div class="row align-items-end">
@@ -83,7 +83,7 @@
     </section>
     <section>
       <div class="p-3">
-        <span>Displaying 1 to 6 out of 24 Events</span>
+        <span id="paginationInfo" role=""></span>
       </div>
       <ul id="eventList" class="list-unstyled mt-3" aria-label="Event List">
         <!-- Event cards will be appended here -->
@@ -99,10 +99,10 @@
       <li class="card mb-3 w-auto focus-ring" aria-label="Event card">
         <article class="card-body">
           <h3 class="card-title card-header" aria-label="Event name"></h3>
-          <div class="m-2 ms-3"><label class="text-muted">Date : </label><time class="card-text mb-2 mt-2" datetime="" aria-label="Event date"></time></div>
-          <div class="m-2 ms-3"><label class="text-muted">Location : </label><span class="card-text mb-2" aria-label="Event location"></span></div>
-          <div class="m-2 ms-3"><label class="text-muted">District : </label><span class="card-text mb-2" aria-label="Event district"></span></div>
-          <div class="m-2 ms-3"><label class="text-muted">Type : </label><span class="card-text" aria-label="Event type"></span></div>
+          <div class="m-2 ms-3"><label class="text-muted">Date:</label> <time class="card-text mb-2 mt-2" datetime="" aria-label="Event date"></time></div>
+          <div class="m-2 ms-3"><label class="text-muted">Location:</label> <span class="card-text mb-2" aria-label="Event location"></span></div>
+          <div class="m-2 ms-3"><label class="text-muted">District:</label> <span class="card-text mb-2" aria-label="Event district"></span></div>
+          <div class="m-2 ms-3"><label class="text-muted">Type:</label> <span class="card-text" aria-label="Event type"></span></div>
         </article>
       </li>
     </template>
